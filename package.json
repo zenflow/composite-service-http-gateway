@@ -1,0 +1,65 @@
+{
+  "name": "composite-service-http-gateway",
+  "version": "0.1.0",
+  "description": "Configurable http gateway service for use with composite-service",
+  "engines": {
+    "node": ">=10"
+  },
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src",
+    "server.js"
+  ],
+  "scripts": {
+    "lint": "eslint . --ext .js,.ts",
+    "lint-fix": "yarn lint --fix",
+    "build": "tsc",
+    "demo": "ts-node test/fixtures/basic-routing-example.ts",
+    "test-only": "jest --ci --runInBand",
+    "test": "yarn lint && yarn test-only && yarn build"
+  },
+  "dependencies": {
+    "@types/serve-static": "^1.13.7",
+    "connect": "^3.7.0",
+    "finalhandler": "^1.1.2",
+    "http-proxy-middleware": "^1.0.6",
+    "serialize-javascript": "^5.0.1",
+    "serve-static": "^1.14.1"
+  },
+  "peerDependencies": {
+    "composite-service": "0.8.x"
+  },
+  "devDependencies": {
+    "@types/serialize-javascript": "^4.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "composite-service": "0.8.x",
+    "eslint": "^7.13.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.6.3",
+    "node-fetch": "^2.6.1",
+    "prettier": "^2.1.2",
+    "stream-line-reader": "^1.0.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.5"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Matthew Francis Brunetti",
+    "email": "zenflow87@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zenflow/composite-service-http-gateway.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zenflow/composite-service-http-gateway/issues"
+  },
+  "homepage": "https://github.com/zenflow/composite-service-http-gateway#readme",
+  "prettier": {
+    "printWidth": 100
+  }
+}
