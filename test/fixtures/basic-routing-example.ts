@@ -1,4 +1,3 @@
-import { join } from "path";
 import { startCompositeService, onceTcpPortUsed } from "composite-service";
 import { configureHttpGateway } from "../../src";
 
@@ -8,7 +7,7 @@ startCompositeService({
   logLevel: "debug",
   services: {
     other: {
-      command: ["node", join(__dirname, "other-service.js")],
+      command: ["node", `${__dirname}/other-service.js`],
       env: { PORT: otherPort },
       ready: () => onceTcpPortUsed(otherPort),
     },
@@ -17,7 +16,7 @@ startCompositeService({
       port,
       routes: {
         "/foo/bar": { proxy: { target: { port: otherPort, host: "localhost" } } },
-        "/foo": { static: { root: join(__dirname, "static"), index: ["index.txt"] } },
+        "/foo": { static: { root: `${__dirname}/static`, index: ["index.txt"] } },
         // this next route can't be reached, since it's path is inside the "/foo" path above
         "/foo/baz": { proxy: { target: { port: otherPort, host: "localhost" } } },
         // this next route *can* be reached, since it's *not* inside the "/foo" path above (or any other)
@@ -27,7 +26,7 @@ startCompositeService({
             pathRewrite: { "^/foobaz": "" },
           },
         },
-        "/": { static: { root: join(__dirname, "static"), index: ["index.txt"] } },
+        "/": { static: { root: `${__dirname}/static`, index: ["index.txt"] } },
       },
     }),
   },
