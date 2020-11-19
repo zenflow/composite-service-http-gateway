@@ -17,7 +17,7 @@ startCompositeService({
       port,
       routes: {
         "/foo/bar": { proxy: { target: { port: otherPort, host: "localhost" } } },
-        "/foo": { static: { dir: join(__dirname, "static"), index: ["index.txt"] } },
+        "/foo": { static: { root: join(__dirname, "static"), index: ["index.txt"] } },
         // this next route can't be reached, since it's path is inside the "/foo" path above
         "/foo/baz": { proxy: { target: { port: otherPort, host: "localhost" } } },
         // this next route *can* be reached, since it's *not* inside the "/foo" path above (or any other)
@@ -27,7 +27,7 @@ startCompositeService({
             pathRewrite: { "^/foobaz": "" },
           },
         },
-        "/": { static: { dir: join(__dirname, "static"), index: ["index.txt"] } },
+        "/": { static: { root: join(__dirname, "static"), index: ["index.txt"] } },
       },
     }),
   },

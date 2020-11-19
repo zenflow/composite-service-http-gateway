@@ -21,8 +21,8 @@ const register = {
       proxyMiddleware(req, res, finalhandler(req, res));
     });
   },
-  static(app, path, { dir, ...config }) {
-    const staticMiddleware = serveStatic(dir, config);
+  static(app, path, { root, ...config }) {
+    const staticMiddleware = serveStatic(root, config);
     registerPathHandler(app, path, (req, res) => {
       req.originalUrl = req.url;
       req.url = urlRemoveBasePath(req.url, path);
