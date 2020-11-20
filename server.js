@@ -7,8 +7,8 @@ const finalhandler = require("finalhandler");
 function createApp(routes) {
   const app = connect();
   for (const [routePath, routeConfig] of Object.entries(routes)) {
-    const [[kind, kindConfig]] = Object.entries(routeConfig);
-    register[kind](app, routePath, kindConfig);
+    const [[handlerId, handlerConfig]] = Object.entries(routeConfig);
+    register[handlerId](app, routePath, handlerConfig);
   }
   app.use((req, res) => finalhandler(req, res)());
   return app;
@@ -64,4 +64,3 @@ const server = createServer(app);
 server.listen(port, host, () => {
   console.log(`Started @ http://${host}:${port}/`);
 });
-// TOOO: handle error listening

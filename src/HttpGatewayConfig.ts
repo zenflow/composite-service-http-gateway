@@ -11,7 +11,7 @@ export interface HttpGatewayConfig {
   /**
    * Port to listen on.
    */
-  port: number;
+  port: number | string;
 
   /**
    * Host to listen on.
