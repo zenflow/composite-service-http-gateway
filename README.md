@@ -53,6 +53,8 @@ startCompositeService({
 Complete documentation for `HttpGatewayConfig` properties can be found in
 [`HttpGatewayConfig.js`](https://github.com/zenflow/composite-service-http-gateway/blob/master/src/HttpGatewayConfig.ts).
 
+### Routes & Handlers
+
 The central property of `HttpGatewayConfig` is `routes`.
 In this object, each key is an absolute URL path,
 and each value is configuration of how to handle requests to that path and all it's sub-paths.
@@ -60,7 +62,7 @@ and each value is configuration of how to handle requests to that path and all i
 requests will be handled by the *first* matching route,
 hence putting the `/` route last in the example above.*
 
-There are currently two ways requests can be handled ("handlers"):
+There are currently two "handlers" (ways requests can be handled):
 
 | # | identifier | middleware | description
 | --- | --- | --- | ---
