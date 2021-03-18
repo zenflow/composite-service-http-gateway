@@ -1,4 +1,4 @@
-import { startCompositeService, onceTcpPortUsed } from "composite-service";
+import { startCompositeService } from "composite-service";
 import { configureHttpGateway } from "../../src";
 
 const [port, otherPort] = [3000, 3001];
@@ -9,7 +9,7 @@ startCompositeService({
     other: {
       command: ["node", `${__dirname}/other-service.js`],
       env: { PORT: otherPort },
-      ready: () => onceTcpPortUsed(otherPort),
+      ready: (ctx) => ctx.onceTcpPortUsed(otherPort),
     },
     gateway: configureHttpGateway({
       dependencies: ["other"],

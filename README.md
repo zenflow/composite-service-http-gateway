@@ -1,16 +1,15 @@
 # composite-service-http-gateway
 
-Configurable http gateway service for use with [`composite-service`](https://github.com/zenflow/composite-service)
+Configurable http gateway service for use with [`composite-service`](https://github.com/zenflow/composite-service#readme)
 
-[![npm stats](https://nodei.co/npm/composite-service-http-gateway.png?compact=true)](http://npmjs.com/package/composite-service-http-gateway)
-
+[![npm version](https://img.shields.io/npm/v/composite-service-http-gateway)](http://npmjs.com/package/composite-service-http-gateway)
 [![CI status](https://img.shields.io/github/workflow/status/zenflow/composite-service-http-gateway/CI?logo=GitHub&label=CI)](https://github.com/zenflow/composite-service-http-gateway/actions?query=branch%3Amaster)
 [![dependencies status](https://img.shields.io/david/zenflow/composite-service-http-gateway)](https://david-dm.org/zenflow/composite-service-http-gateway)
 [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability-percentage/zenflow/composite-service-http-gateway?logo=Code%20Climate)](https://codeclimate.com/github/zenflow/composite-service-http-gateway)
 [![Known Vulnerabilities](https://snyk.io/test/github/zenflow/composite-service-http-gateway/badge.svg?targetFile=package.json)](https://snyk.io/test/github/zenflow/composite-service-http-gateway?targetFile=package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
-## Installation
+## Install
 
 ```
 $ npm install composite-service composite-service-http-gateway
@@ -18,32 +17,37 @@ $ npm install composite-service composite-service-http-gateway
 
 ## Usage
 
-Call `configureHttpGateway` to get a `ServiceConfig` object (for your gateway service)
-which you can use in your `CompositeServiceConfig`.
-
-The `configureHttpGateway` function takes a `HttpGatewayConfig` object as it's only argument.
+Call `configureHttpGateway` with a [`HttpGatewayConfig`](./src/HttpGatewayConfig.ts) object
+to get a `ServiceConfig` object you can use in your `CompositeServiceConfig`.
 
 ```js
 const { startCompositeService } = require("composite-service");
 const { configureHttpGateway } = require("composite-service-http-gateway");
+
+const apiPort = process.env.API_PORT || 8000;
+const webPort = process.env.API_PORT || 8001;
+const port = process.env.PORT || 3000;
 
 startCompositeService({
   services: {
     api: {
       cwd: `${__dirname}/api`,
       command: "node server.js",
-      env: { PORT: "3001" },
+      env: { PORT: apiPort },
+      ready: ctx => ctx.onceTcpPortUsed(apiPort),
     },
     web: {
       cwd: `${__dirname}/web`,
-      command: "next start --port 3002"
+      command: `next start --port ${webPort}`,
+      ready: ctx => ctx.onceTcpPortUsed(webPort),
     },
     gateway: configureHttpGateway({
-      port: process.env.PORT || 3000,
+      dependencies: ["api", "web"],
+      port,
       routes: {
         "/admin": { static: { root: `${__dirname}/admin/build` } },
-        "/api": { proxy: { target: "http://localhost:3001" } },
-        "/": { proxy: { target: "http://localhost:3002" } },
+        "/api": { proxy: { target: `http://localhost:${apiPort}` } },
+        "/": { proxy: { target: `http://localhost:${webPort}` } },
       },
     }),
   },
@@ -53,7 +57,7 @@ startCompositeService({
 The [`HttpGatewayConfig`](./src/HttpGatewayConfig.ts) object defines a `port`, a `host` (optional), and a collection of `routes`.
 Any additional properties will be included in the returned `ServiceConfig` (except `command` or `ready`).
 
-### Routes & Handlers
+### Routes
 
 The central property of `HttpGatewayConfig` is `routes`.
 In this object, each key is an absolute URL path,
@@ -62,18 +66,24 @@ and each value is configuration of how to handle requests to that path and all i
 requests will be handled by the *first* matching route,
 hence putting the `/` route last in the example above.*
 
-There are currently two "handlers" (ways requests can be handled):
+### Handlers
+
+There are currently two "handlers", or ways requests can be handled:
 
 | # | identifier | middleware | description
 | --- | --- | --- | ---
-| 1 | `proxy` | [`http-proxy-middleware`](https://github.com/chimurai/http-proxy-middleware) | Proxy to another http service, typically a sibling composed service
-| 2 | `static` | [`serve-static`](https://github.com/expressjs/serve-static) | Serve static files from the filesystem
+| 1 | `proxy` | [`http-proxy-middleware`](https://github.com/chimurai/http-proxy-middleware#readme) | Proxy to another http service, typically a sibling composed service
+| 2 | `static` | [`serve-static`](https://github.com/expressjs/serve-static#readme) | Serve static files from the filesystem
 
 Handler config objects are mostly just passed along to the underlying middleware,
 so *please refer to the linked middleware documentation for details on configuration options*.
 
 The following configuration defaults are changed:
-  - For `proxy`: `{ ws: true, logLevel: "warn" }`
+- For `proxy`:
+  - `logLevel: "warn"` noise down
+  - `ws: true` WebSockets enabled
+
+### Using functions in handler configuration
 
 Non-json-serializable values like functions and regular expressions can be used in handler configuration
 thanks to [`serialize-javascript`](https://github.com/yahoo/serialize-javascript).

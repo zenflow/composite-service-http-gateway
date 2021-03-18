@@ -1,6 +1,6 @@
 import { join } from "path";
 import serializeJavascript from "serialize-javascript";
-import { ServiceConfig, onceOutputLineIncludes } from "composite-service";
+import { ServiceConfig } from "composite-service";
 import { HttpGatewayConfig } from "./HttpGatewayConfig";
 import { validateAndNormalizeConfig } from "./validateAndNormalizeConfig";
 
@@ -16,6 +16,6 @@ export function configureHttpGateway(config: HttpGatewayConfig): ServiceConfig {
       HOST: host,
       ROUTES: serializeJavascript(routes, { unsafe: true }),
     },
-    ready: (ctx) => onceOutputLineIncludes(ctx.output, "Started @ "),
+    ready: (ctx) => ctx.onceOutputLine((line) => line.startsWith("Started @ ")),
   };
 }
