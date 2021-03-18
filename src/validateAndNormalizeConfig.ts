@@ -1,4 +1,3 @@
-import { ServiceConfig } from "composite-service";
 import {
   HttpGatewayConfig,
   HttpGatewayRouteConfig,
@@ -6,16 +5,13 @@ import {
   HttpGatewayStaticHandlerConfig,
 } from "./HttpGatewayConfig";
 
-export interface NormalizedHttpGatewayConfig {
-  dependencies: ServiceConfig["dependencies"];
+export interface NormalizedHttpGatewayConfig extends HttpGatewayConfig {
   port: number;
   host: string;
   routes: { [path: string]: HttpGatewayRouteConfig };
 }
 
 export function validateAndNormalizeConfig(input: HttpGatewayConfig): NormalizedHttpGatewayConfig {
-  const dependencies = input.dependencies;
-
   if (!input.port) {
     throw new ConfigValidationError("`port` is required");
   }
@@ -36,7 +32,7 @@ export function validateAndNormalizeConfig(input: HttpGatewayConfig): Normalized
     routes[path] = config;
   }
 
-  return { dependencies, port, host, routes };
+  return { ...input, port, host, routes };
 }
 
 function validateRoutePath(path: string) {

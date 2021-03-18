@@ -50,8 +50,8 @@ startCompositeService({
 });
 ```
 
-Complete documentation for `HttpGatewayConfig` properties can be found in
-[`HttpGatewayConfig.js`](https://github.com/zenflow/composite-service-http-gateway/blob/master/src/HttpGatewayConfig.ts).
+The [`HttpGatewayConfig`](./src/HttpGatewayConfig.ts) object defines a `port`, a `host` (optional), and a collection of `routes`.
+Any additional properties will be included in the returned `ServiceConfig` (except `command` or `ready`).
 
 ### Routes & Handlers
 
@@ -79,6 +79,4 @@ Non-json-serializable values like functions and regular expressions can be used 
 thanks to [`serialize-javascript`](https://github.com/yahoo/serialize-javascript).
 This however comes with caveats:
 1. Functions must be pure (i.e. must not refer to variables outside it's definition)
-2. In functions, when `require`ing a module, the path the module will be resolved from is unfixed
-(but still within the root of the project).
-See issue [#1](https://github.com/zenflow/composite-service-http-gateway/issues/1).
+2. In functions, when `require`ing a module, the path the module will be resolved from the `ServiceConfig.cwd`.

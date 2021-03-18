@@ -2,12 +2,10 @@ import { ServiceConfig } from "composite-service";
 import * as HttpProxyMiddleware from "http-proxy-middleware";
 import serveStatic from "serve-static";
 
-export interface HttpGatewayConfig {
-  /**
-   * Value to use for the [`ServiceConfig`s] `dependencies` property
-   */
-  dependencies?: ServiceConfig["dependencies"];
-
+/**
+ * Configuration for an http gateway service
+ */
+export interface HttpGatewayConfig extends Omit<ServiceConfig, "command" | "ready"> {
   /**
    * Port to listen on.
    */
@@ -33,7 +31,6 @@ export type HttpGatewayRouteConfig =
   | { proxy: HttpGatewayProxyHandlerConfig }
   | { static: HttpGatewayStaticHandlerConfig };
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface HttpGatewayProxyHandlerConfig extends HttpProxyMiddleware.Options {}
 
 export interface HttpGatewayStaticHandlerConfig extends serveStatic.ServeStaticOptions {
