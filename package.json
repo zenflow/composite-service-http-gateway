@@ -21,7 +21,7 @@
     "test": "yarn lint && yarn test-only && yarn build"
   },
   "dependencies": {
-    "@types/serve-static": "^1.13.7",
+    "@types/serve-static": "^1.13.9",
     "connect": "^3.7.0",
     "finalhandler": "^1.1.2",
     "http-proxy-middleware": "^1.0.6",
@@ -32,12 +32,12 @@
     "composite-service": "0.8.x"
   },
   "devDependencies": {
-    "@types/serialize-javascript": "^4.0.0",
+    "@types/serialize-javascript": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^4.7.0",
     "@typescript-eslint/parser": "^4.7.0",
     "composite-service": "0.8.x",
     "eslint": "^7.13.0",
-    "eslint-config-prettier": "^6.15.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.6.3",
     "node-fetch": "^2.6.1",
