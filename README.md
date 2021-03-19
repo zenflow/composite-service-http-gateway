@@ -89,4 +89,4 @@ Non-json-serializable values like functions and regular expressions can be used 
 thanks to [`serialize-javascript`](https://github.com/yahoo/serialize-javascript).
 This however comes with caveats:
 1. Functions must be pure (i.e. must not refer to variables outside it's definition)
-2. In functions, when `require`ing a module, the path the module will be resolved from the `ServiceConfig.cwd`.
+2. `require()`s inside a function will be resolved from`node_modules/composite-service-http-gateway/server/server.js` (3 levels)
