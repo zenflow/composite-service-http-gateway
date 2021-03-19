@@ -57,7 +57,7 @@ function urlRemoveBasePath(url, basePath) {
 
 const port = Number(process.env.PORT);
 const host = process.env.HOST;
-const routes = eval(`(${process.env.ROUTES})`);
+const routes = eval(`(${process.env.GATEWAY_ROUTES})`);
 
 const app = createApp(routes);
 const server = createServer(app);

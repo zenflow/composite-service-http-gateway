@@ -8,13 +8,13 @@ export function configureHttpGateway(config: HttpGatewayConfig): ServiceConfig {
   const { port, host, routes, ...rest } = validateAndNormalizeConfig(config);
   return {
     ...rest,
-    command: ["node", join(__dirname, "..", "server.js")],
+    command: ["node", join(__dirname, "..", "server", "server.js")],
     env: {
       NODE_ENV: "production",
       ...rest.env,
       PORT: String(port),
       HOST: host,
-      ROUTES: serializeJavascript(routes, { unsafe: true }),
+      GATEWAY_ROUTES: serializeJavascript(routes, { unsafe: true }),
     },
     ready: (ctx) => ctx.onceOutputLine((line) => line.startsWith("Started @ ")),
   };
