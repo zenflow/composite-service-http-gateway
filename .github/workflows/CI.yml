@@ -27,10 +27,10 @@ jobs:
             nodeModules-
       - run: yarn install --frozen-lockfile
       - run: yarn build
-  #      - uses: actions/upload-artifact@v2
-  #        with:
-  #          name: dist
-  #          path: dist/
+      - uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist/
   test:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -48,3 +48,24 @@ jobs:
             matrix-nodeModules-
       - run: yarn install --frozen-lockfile
       - run: yarn test-only
+  release:
+    needs: [lint, build, test]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            nodeModules-
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist/
+      - run: yarn semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
