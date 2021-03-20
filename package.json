@@ -1,6 +1,6 @@
 {
   "name": "composite-service-http-gateway",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Configurable http gateway service for use with composite-service",
   "engines": {
     "node": ">=10"
