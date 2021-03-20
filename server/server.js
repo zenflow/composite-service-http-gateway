@@ -61,6 +61,7 @@ const routes = eval(`(${process.env.GATEWAY_ROUTES})`);
 
 const app = createApp(routes);
 const server = createServer(app);
+const url = `http://${host === "0.0.0.0" ? "localhost" : host}:${port}/`;
 server.listen(port, host, () => {
-  console.log(`Started @ http://${host}:${port}/`);
+  console.log(`Started @ ${url} (host: ${host}, port: ${port})`);
 });

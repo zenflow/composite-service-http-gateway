@@ -25,7 +25,7 @@ describe("basic routing", () => {
         " (debug) Starting service 'other'...",
         " (debug) Started service 'other'",
         " (debug) Starting service 'gateway'...",
-        "gateway | Started @ http://localhost:3000/",
+        "gateway | Started @ http://localhost:3000/ (host: 0.0.0.0, port: 3000)",
         " (debug) Started service 'gateway'",
         " (debug) Started composite service",
       ]

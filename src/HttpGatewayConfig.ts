@@ -13,7 +13,7 @@ export interface HttpGatewayConfig extends Omit<ServiceConfig, "command" | "read
 
   /**
    * Host to listen on.
-   * Defaults to `localhost`.
+   * Defaults to `0.0.0.0`.
    */
   host?: string;
 

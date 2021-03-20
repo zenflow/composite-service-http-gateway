@@ -20,11 +20,14 @@ export function validateAndNormalizeConfig(input: HttpGatewayConfig): Normalized
     throw new ConfigValidationError("`port` must be an integer");
   }
 
-  const host = input.host || "localhost";
+  const host = input.host || "0.0.0.0";
   if (typeof host !== "string") {
     throw new ConfigValidationError("`host` must be a string");
   }
 
+  if (!input.routes || !Object.entries(input.routes).length) {
+    throw new ConfigValidationError("`routes` must be an object with at least one entry");
+  }
   const routes: { [path: string]: HttpGatewayRouteConfig } = {};
   for (const [path, config] of Object.entries(input.routes)) {
     validateRoutePath(path);
