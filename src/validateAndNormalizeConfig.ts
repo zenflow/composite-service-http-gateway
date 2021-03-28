@@ -9,6 +9,7 @@ export interface NormalizedHttpGatewayConfig extends HttpGatewayConfig {
   port: number;
   host: string;
   routes: { [path: string]: HttpGatewayRouteConfig };
+  onReady: () => void | Promise<void>;
 }
 
 export function validateAndNormalizeConfig(input: HttpGatewayConfig): NormalizedHttpGatewayConfig {
@@ -26,7 +27,7 @@ export function validateAndNormalizeConfig(input: HttpGatewayConfig): Normalized
   }
 
   if (!input.routes || !Object.entries(input.routes).length) {
-    throw new ConfigValidationError("`routes` must be an object with at least one entry");
+    throw new ConfigValidationError("`routes` is required & must have at least one entry");
   }
   const routes: { [path: string]: HttpGatewayRouteConfig } = {};
   for (const [path, config] of Object.entries(input.routes)) {
@@ -35,7 +36,12 @@ export function validateAndNormalizeConfig(input: HttpGatewayConfig): Normalized
     routes[path] = config;
   }
 
-  return { ...input, port, host, routes };
+  const onReady = input.onReady || (() => {});
+  if (typeof onReady !== "function") {
+    throw new ConfigValidationError("`onReady` must be a function");
+  }
+
+  return { ...input, port, host, routes, onReady };
 }
 
 function validateRoutePath(path: string) {

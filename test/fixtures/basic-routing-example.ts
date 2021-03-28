@@ -1,7 +1,10 @@
+import { promisify } from "util";
 import { startCompositeService } from "composite-service";
 import { configureHttpGateway } from "../../src";
 
 const [port, otherPort] = [3000, 3001];
+
+const delay = promisify(setTimeout);
 
 startCompositeService({
   logLevel: "debug",
@@ -14,6 +17,11 @@ startCompositeService({
     gateway: configureHttpGateway({
       dependencies: ["other"],
       port,
+      onReady: async () => {
+        console.log("onReady start");
+        await delay(250);
+        console.log("onReady end");
+      },
       routes: {
         "/foo/bar": { proxy: { target: { port: otherPort, host: "localhost" } } },
         "/foo": { static: { root: `${__dirname}/static`, index: ["index.txt"] } },

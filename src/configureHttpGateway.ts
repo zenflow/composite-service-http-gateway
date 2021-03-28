@@ -5,7 +5,7 @@ import { HttpGatewayConfig } from "./HttpGatewayConfig";
 import { validateAndNormalizeConfig } from "./validateAndNormalizeConfig";
 
 export function configureHttpGateway(config: HttpGatewayConfig): ServiceConfig {
-  const { port, host, routes, ...rest } = validateAndNormalizeConfig(config);
+  const { port, host, routes, onReady, ...rest } = validateAndNormalizeConfig(config);
   return {
     ...rest,
     command: ["node", join(__dirname, "..", "server", "server.js")],
@@ -16,6 +16,9 @@ export function configureHttpGateway(config: HttpGatewayConfig): ServiceConfig {
       HOST: host,
       GATEWAY_ROUTES: serializeJavascript(routes, { unsafe: true }),
     },
-    ready: (ctx) => ctx.onceOutputLine((line) => line.startsWith("Started @ ")),
+    ready: async (ctx) => {
+      await ctx.onceOutputLine((line) => line.startsWith("Started @ "));
+      await onReady();
+    },
   };
 }

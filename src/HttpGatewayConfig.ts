@@ -25,6 +25,11 @@ export interface HttpGatewayConfig extends Omit<ServiceConfig, "command" | "read
    * Therefore, if you have a route for `'/'`, it should be come last.
    */
   routes: { [path: string]: HttpGatewayRouteConfig };
+
+  /**
+   * Hook to run after the service is ready but before it is registered as ready.
+   */
+  onReady?: () => void | Promise<void>;
 }
 
 export type HttpGatewayRouteConfig =
