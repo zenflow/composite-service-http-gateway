@@ -9,6 +9,8 @@ const indexFileText = readFileSync("test/fixtures/static/index.txt", "utf8");
 const baseUrl = "http://localhost:3000";
 
 describe("basic routing", () => {
+  jest.setTimeout(15000);
+
   let child;
   afterEach(async () => {
     child.kill();
