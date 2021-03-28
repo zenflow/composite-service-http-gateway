@@ -54,7 +54,8 @@ startCompositeService({
 });
 ```
 
-The [`HttpGatewayConfig`](./src/HttpGatewayConfig.ts) object defines a `port`, a `host` (optional), and a collection of `routes`.
+The [`HttpGatewayConfig`](./src/HttpGatewayConfig.ts) object defines
+a `port`, a `host` (optional), a collection of `routes`, and an `onReady` hook (optional).
 Any additional properties will be included in the returned `ServiceConfig` (except `command` or `ready`).
 
 ### Routes
