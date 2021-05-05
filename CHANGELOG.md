@@ -1,5 +1,9 @@
 # Changelog
 
+# [1.0.0](https://github.com/zenflow/composite-service-http-gateway/compare/v0.2.0...v1.0.0) (2021-05-04)
+
+*No changes*
+
 # [0.2.0](https://github.com/zenflow/composite-service-http-gateway/compare/v0.1.1...v0.2.0) (2021-03-28)
 
 
