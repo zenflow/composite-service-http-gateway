@@ -77,12 +77,14 @@ There are currently two "handlers", or ways requests can be handled:
 | 2 | `static` | [`serve-static`](https://github.com/expressjs/serve-static#readme) | Serve static files from the filesystem
 
 Handler config objects are mostly just passed along to the underlying middleware,
-so *please refer to the linked middleware documentation for details on configuration options*.
+so *please refer to the above-linked middleware documentation for details on configuration options*.
 
-The following configuration defaults are changed:
-- For `proxy`:
-  - `logLevel: "warn"` noise down
-  - `ws: true` WebSockets enabled
+That said, the following handler config defaults are updated for convenience:
+
+| handler | config | original default | updated default | reason |
+| --- | --- | --- | --- | ---
+| `proxy` | `logLevel` | `"info"` | `"warn"` | reduce noise
+| `proxy` | `ws` | `false` | `true` | support WebSocket connections out-of-the-box
 
 ### Using functions in handler configuration
 
