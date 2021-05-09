@@ -25,7 +25,7 @@ const { startCompositeService } = require("composite-service");
 const { configureHttpGateway } = require("composite-service-http-gateway");
 
 const apiPort = process.env.API_PORT || 8000;
-const webPort = process.env.API_PORT || 8001;
+const webPort = process.env.WEB_PORT || 8001;
 const port = process.env.PORT || 3000;
 
 startCompositeService({
